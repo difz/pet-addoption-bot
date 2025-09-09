@@ -27,11 +27,22 @@ engine = build_engine()
 MEM = {}
 
 HELP = (
-    "Hi! I'm **AdoptCare VetBot** 👩‍⚕️🐾\n"
-    "Ask me about: vaccines, deworming, spay/neuter, flea/tick, diet/feeding, "
-    "quarantine, vet check, behavior & introductions, home prep, costs, emergency signs.\n"
-    "Tip: tell me your planned pet, e.g. `I want to adopt a 3 month old kitten`.\n"
-    "_Disclaimer: I provide general guidance only, not a substitute for a veterinarian._"
+    "👋 Hi! I'm **AdoptCare VetBot** 🐾\n\n"
+    "**How to use me:**\n"
+    "• To ask a question, type: `!ask your question here`\n"
+    "   e.g. `!ask I want to adopt a 3 month old kitten`\n"
+    "• Use `!help` anytime to see this guide again.\n\n"
+    "**Topics I can help with:**\n"
+    "• Vaccines & deworming\n"
+    "• Spay / neuter\n"
+    "• Flea & tick treatment\n"
+    "• Diet & feeding\n"
+    "• Quarantine & vet check\n"
+    "• Behavior & introductions\n"
+    "• Home preparation\n"
+    "• Adoption costs\n"
+    "• Emergency signs 🚨\n\n"
+    "_Disclaimer: I provide general guidance only — not a substitute for a licensed veterinarian._"
 )
 
 @client.event
@@ -42,23 +53,35 @@ async def on_ready():
 async def on_message(message: discord.Message):
     if message.author.bot:
         return
-    text = message.content.strip()
-    
-    if not client.user.mentioned_in(message):
-        return
-    
-    text = message.clean_content.strip()
 
+    text = message.content.strip()
+
+    # hanya respon kalau text diawali "!" atau "/"
+    if not (text.startswith("!") or text.startswith("/")):
+        return
+
+    # === help ===
     if text.lower() in {"!help", "/help"}:
         await message.channel.send(HELP)
         return
 
-    ctx = MEM.setdefault(message.author.id, {"species": None, "age_months": None, "weight_kg": None})
-    reply, ctx_update = respond_with_context(engine, text, ctx)
-    ctx.update(ctx_update or {})
+    # === ask ===
+    if text.lower().startswith(("!ask", "/ask")):
+        # ambil query setelah "!ask " atau "/ask "
+        query = text.split(maxsplit=1)
+        if len(query) < 2:
+            await message.channel.send("Please provide a question, e.g. `!ask my cat has fleas`")
+            return
 
-    if reply:
-        logging.info(f"[{message.author}] {text} -> {reply}")
-        await message.channel.send(reply)
+        query_text = query[1]
+
+        ctx = MEM.setdefault(message.author.id, {"species": None, "age_months": None, "weight_kg": None})
+        reply, ctx_update = respond_with_context(engine, query_text, ctx)
+        ctx.update(ctx_update or {})
+
+        if reply:
+            logging.info(f"[{message.author}] {query_text} -> {reply}")
+            await message.channel.send(reply)
+
 
 client.run(TOKEN)
