@@ -1,1 +1,12 @@
+# venv
+.venv/
+# python
+__pycache__/
+*.pyc
+# env
 .env
+# logs (keep folder, ignore files)
+logs/*.log
+# os files
+.DS_Store
+Thumbs.db
