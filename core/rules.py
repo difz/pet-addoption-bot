@@ -98,19 +98,19 @@ def _vaccines(ctx):
     s = ctx.get("species")
     if s in {"dog"}:
         return (f"{sline}: core vaccines include **DA2PP** (distemper/adenovirus/parvo/parainfluenza) "
-                "and **rabies**. Typical puppy series: every 3–4 weeks until ~16 weeks, booster at 1 year, "
-                "then every 1–3 years per vet and local law.")
+                "and **rabies**. Typical puppy series: every 3-4 weeks until ~16 weeks, booster at 1 year, "
+                "then every 1-3 years per vet and local law.")
     if s in {"cat"}:
         return (f"{sline}: core vaccines include **FVRCP** (panleukopenia/herpes/calicivirus) "
-                "and **rabies**. Kitten series: every 3–4 weeks until ~16 weeks, booster at 1 year, "
-                "then every 1–3 years per vet and local law.")
+                "and **rabies**. Kitten series: every 3-4 weeks until ~16 weeks, booster at 1 year, "
+                "then every 1-3 years per vet and local law.")
     return (f"{sline}: check local guidelines; most species need rabies (where applicable) "
             "plus species-specific cores. A vet will tailor the schedule.")
 
 def _deworm(ctx):
     sline = _species_age_line(ctx)
     return (f"{sline}: routine deworming: young animals every 2 weeks until ~12 weeks, "
-            "then monthly until 6 months, then every 3–6 months (or fecal checks). "
+            "then monthly until 6 months, then every 3-6 months (or fecal checks). "
             "Use vet-approved products and dose by weight.")
 
 def _fleas(ctx):
@@ -122,7 +122,7 @@ def _spay(ctx):
     s = ctx.get("species")
     sline = _species_age_line(ctx)
     if s == "dog":
-        return (f"{sline}: typical spay/neuter timing is **6–9 months** (earlier for small breeds, "
+        return (f"{sline}: typical spay/neuter timing is **6-9 months** (earlier for small breeds, "
                 "later for some large breeds). Discuss growth/behavior with your vet.")
     if s == "cat":
         return (f"{sline}: typical spay/neuter timing is **4-6 months**; helps prevent roaming, spraying, and litters.")
