@@ -112,4 +112,3 @@ Other examples:
 ## Notes
 - The bot must stay running in your terminal to stay online.
 - Logs are saved in `logs/bot.log`.
-- Do not commit your real `.env` file — only `.env.example`.
