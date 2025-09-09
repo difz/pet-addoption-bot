@@ -60,14 +60,14 @@ def rules():
 
     R.append({
         "name": "home_prep_cost",
-        "pattern": re.compile(r".*\b(home|house|prep|setup|cost|budget|expense|suppl(y|ies))\b.*", re.I),
+        "pattern": re.compile(r".*\b(home|house|prep|setup|costs|budget|expense|suppl(y|ies))\b.*", re.I),
         "handler": lambda ctx, m: _home_cost(ctx) + _disclaimer()
     })
 
     R.append({
         "name": "emergency",
         "pattern": re.compile(
-            r".*\b(vomit|diarrhea|bloody|not eat|won.?t eat|lethargy|seizure|collapse|labored\s*breath|trouble\s*breathing|pale gums)\b.*",
+            r".*\b(vomit|diarrhea|bloody|not eat|won.?t eat|lethargy|seizure|collapse|accidentally|labored\s*breath|trouble\s*breathing|pale gums)\b.*",
             re.I
         ),
         "handler": lambda ctx, m: _emergency(ctx) + _disclaimer()
@@ -168,6 +168,7 @@ def _emergency(ctx):
 def _fallback(ctx):
     s = ctx.get("species")
     tip = "Tell me your planned pet (e.g., `I want to adopt a 3 month old kitten`) so I can tailor advice."
-    return ("I can help with vaccines, deworming, fleas/ticks, diet, spay/neuter, "
+    return ("Hi!\nTag me if you want to talk to me! \nI can help with vaccines, deworming, fleas/ticks, diet, spay/neuter, "
             "quarantine & vet checks, introductions, home prep, costs, and emergencies.\n"
             + ("" if s else tip))
+    
