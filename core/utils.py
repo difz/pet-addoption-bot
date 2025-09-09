@@ -13,18 +13,26 @@ WEIGHT = re.compile(
 )
 
 SPECIES = re.compile(
-    r"\b(dog|puppy|cat|kitten|rabbit|bunny|hamster|guinea\s*pig|bird|parrot)\b",
+    r"\b(dog|dogs|puppy|cat|cats|kitten|rabbit|rabbits|bunny|hamster|hamsters|guinea\s*pig|guinea\s*pigs|bird|birds|parrot|parrots)\b",
     re.I,
 )
+
 
 def normalize_species(s: str | None):
     if not s: return None
     s = s.lower()
     if s in {"puppy"}: return "dog"
+    if s in {"dog", "dogs"}: return "dog"
     if s in {"kitten"}: return "cat"
+    if s in {"cat", "cats"}: return "cat"
     if s in {"bunny"}: return "rabbit"
+    if s in {"rabbit", "rabbits"}: return "rabbit"
+    if s in {"hamster", "hamsters"}: return "hamster"
     if "guinea" in s: return "guinea pig"
+    if s in {"bird", "birds"}: return "bird"
+    if s in {"parrot", "parrots"}: return "parrot"
     return s
+
 
 def parse_age_months(text: str):
     m = AGE.search(text)
