@@ -43,6 +43,11 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
     text = message.content.strip()
+    
+    if not client.user.mentioned_in(message):
+        return
+    
+    text = message.clean_content.strip()
 
     if text.lower() in {"!help", "/help"}:
         await message.channel.send(HELP)
