@@ -1,10 +1,44 @@
 import re
+from core.utils import reflect
+
+BOT_DESCRIPTION = (
+    "I am AdoptCare VetBot 👩‍⚕️🐾 — "
+    "a rule-based chatbot designed to answer FAQs about pet health, "
+    "adoption readiness, and basic veterinary care. "
+    "I give general advice but I'm not a substitute for a real veterinarian."
+)
+
+_PRONOUNS = re.compile(r"\b(i|you|me|my|your)\b", re.I)
+
+def with_reflection(user_text: str, advice_text: str) -> str:
+
+    mirror = reflect(user_text) if _PRONOUNS.search(user_text or "") else None
+    if mirror and mirror[0].isalpha():
+
+        mirror = mirror[0].lower() + mirror[1:]
+    lead = f"Since {mirror}, try this: " if mirror else "Try this: "
+    return f"{lead}{advice_text}{_disclaimer()}"
+
+def wrap(builder):
+
+    def handler(ctx, m):
+        advice = builder(ctx)
+        return with_reflection(m.string, advice)
+    return handler
 
 def _disclaimer():
     return "\n\n_This is general guidance; consult a veterinarian for diagnosis/treatment._"
 
 def rules():
     R = []
+    
+    R.append({
+        "name": "bot_identity",
+        "pattern": re.compile(r".*\b(who\s+are\s+you|what\s+are\s+you|your\s+name)\b.*", re.I),
+        "handler": lambda ctx, m: (
+            f"You asked '{reflect(m.string)}' \n\n{BOT_DESCRIPTION}"
+        )
+    })
 
     # Context placeholder (conceptual; engine handles extraction)
     R.append({
@@ -48,7 +82,7 @@ def rules():
 
     R.append({
         "name": "pre_adopt_check",
-        "pattern": re.compile(r".*\b(quarantine|isolate|vet\s*check|health\s*check|before\s*adopt|pre[- ]?adopt)\b.*", re.I),
+        "pattern": re.compile(r".*\b(adopt|quarantine|isolate|vet\s*check|health\s*check|before\s*adopt|pre[- ]?adopt)\b.*", re.I),
         "handler": lambda ctx, m: _pre_check(ctx) + _disclaimer()
     })
 
@@ -168,7 +202,6 @@ def _emergency(ctx):
 def _fallback(ctx):
     s = ctx.get("species")
     tip = "Tell me your planned pet (e.g., `I want to adopt a 3 month old kitten`) so I can tailor advice."
-    return ("Hi!\nTag me if you want to talk to me! \nI can help with vaccines, deworming, fleas/ticks, diet, spay/neuter, "
+    return ("**Sorry i don't have knowledge for that question :(** \n\nI can help with vaccines, deworming, fleas/ticks, diet, spay/neuter, "
             "quarantine & vet checks, introductions, home prep, costs, and emergencies.\n"
             + ("" if s else tip))
-    
