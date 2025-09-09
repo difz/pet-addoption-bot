@@ -28,9 +28,10 @@ def rules():
 
     R.append({
         "name": "fleas_ticks",
-        "pattern": re.compile(r".*\b(flea|tick|mites?)\b.*", re.I),
+        "pattern": re.compile(r".*\b(flea|fleas|tick|ticks|mite|mites)\b.*", re.I),
         "handler": lambda ctx, m: _fleas(ctx) + _disclaimer()
     })
+
 
     R.append({
         "name": "spay_neuter",
@@ -40,9 +41,10 @@ def rules():
 
     R.append({
         "name": "diet",
-        "pattern": re.compile(r".*\b(feed|diet|food|kibble|wet food|raw)\b.*", re.I),
+        "pattern": re.compile(r".*\b(feed\w*|diet\w*|food\w*|kibble|wet\s*food|raw)\b.*", re.I),
         "handler": lambda ctx, m: _diet(ctx) + _disclaimer()
     })
+
 
     R.append({
         "name": "pre_adopt_check",
@@ -123,7 +125,7 @@ def _spay(ctx):
         return (f"{sline}: typical spay/neuter timing is **6–9 months** (earlier for small breeds, "
                 "later for some large breeds). Discuss growth/behavior with your vet.")
     if s == "cat":
-        return (f"{sline}: typical spay/neuter timing is **4–6 months**; helps prevent roaming, spraying, and litters.")
+        return (f"{sline}: typical spay/neuter timing is **4-6 months**; helps prevent roaming, spraying, and litters.")
     return f"{sline}: timing varies by species; consult your vet for safest anesthesia/age window."
 
 def _diet(ctx):
