@@ -20,7 +20,7 @@ A simple rule-based chatbot that answers **pre-adoption pet health FAQs** using 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/adoptcare-discord.git
+git clone https://github.com/difz/pet-addoption-bot.git
 cd adoptcare-discord
 ```
 
@@ -96,9 +96,11 @@ In a channel where the bot has access, try:
 
 ```text
 !help
+!ask[Question]
 ```
 
 Other examples:
+- `Who are you?`
 - `I want to adopt a 3 month old kitten`
 - `What vaccines does a kitten need?`
 - `How often should I deworm a puppy?`
