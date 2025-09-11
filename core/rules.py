@@ -82,7 +82,7 @@ def rules():
 
     R.append({
         "name": "pre_adopt_check",
-        "pattern": re.compile(r".*\b(adopt|quarantine|isolate|vet\s*check|health\s*check|before\s*adopt|pre[- ]?adopt)\b.*", re.I),
+        "pattern": re.compile(r".*\b(adopt|adoption|quarantine|isolate|vet\s*check|health\s*check|before\s*adopt|pre[- ]?adopt)\b.*", re.I),
         "handler": lambda ctx, m: _pre_check(ctx) + _disclaimer()
     })
 
